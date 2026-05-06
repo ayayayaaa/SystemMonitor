@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SystemMonitor")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1c0c3520f04dee88c2545051cfbee000f0276f11")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a39c37d894de56efa6d7177e5275e4b297dc2bde")]
 [assembly: System.Reflection.AssemblyProductAttribute("SystemMonitor")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SystemMonitor")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

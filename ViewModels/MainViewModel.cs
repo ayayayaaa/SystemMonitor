@@ -7,6 +7,7 @@ using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
 using SkiaSharp;
+using System.Windows;
 
 namespace SystemMonitor.ViewModels
 {
@@ -173,6 +174,7 @@ namespace SystemMonitor.ViewModels
                     App.Current.Dispatcher.Invoke(() =>
                     {
                         AlertHistories.Insert(0, triggered);
+                        MessageBox.Show(triggered.Message, "⚠️ Alert!", MessageBoxButton.OK, MessageBoxImage.Warning);
                     });
                 }
             }
