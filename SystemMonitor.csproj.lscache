@@ -69,6 +69,7 @@ obj/Debug/net10.0-windows/
  SystemMonitor.AssemblyInfo.cs
  SystemMonitor.GlobalUsings.g.cs
 Services/HardwareService.cs
+ViewModels/MainViewModel.cs
 
 [metadataReferences]
 <DOTNET>/packs/Microsoft.NETCore.App.Ref/10.0.7/ref/net10.0/
