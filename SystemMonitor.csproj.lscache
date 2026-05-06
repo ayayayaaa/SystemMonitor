@@ -68,6 +68,7 @@ obj/Debug/net10.0-windows/
  MainWindow.g.cs
  SystemMonitor.AssemblyInfo.cs
  SystemMonitor.GlobalUsings.g.cs
+Services/HardwareService.cs
 
 [metadataReferences]
 <DOTNET>/packs/Microsoft.NETCore.App.Ref/10.0.7/ref/net10.0/
@@ -278,6 +279,15 @@ obj/Debug/net10.0-windows/
  UIAutomationProvider.dll
  UIAutomationTypes.dll
  WindowsBase.dll
+<NUGET>/
+ blacksharp.core/1.0.7/lib/net10.0/BlackSharp.Core.dll
+ diskinfotoolkit/1.1.2/lib/net10.0/DiskInfoToolkit.dll
+ hidsharp/2.6.4/lib/netstandard2.0/HidSharp.dll
+ librehardwaremonitorlib/0.9.6/ref/net10.0/LibreHardwareMonitorLib.dll
+ mono.posix.netstandard/1.0.0/ref/netstandard2.0/Mono.Posix.NETStandard.dll
+ ramspdtoolkit-ndd/1.4.2/lib/net10.0/RAMSPDToolkit-NDD.dll
+ system.io.ports/10.0.3/lib/net10.0/System.IO.Ports.dll
+ system.management/10.0.2/lib/net10.0/System.Management.dll
 
 [analyzerReferences]
 <DOTNET>/packs/Microsoft.NETCore.App.Ref/10.0.7/analyzers/dotnet/cs/
