@@ -1,3 +1,4 @@
+using System.IO;
 using LibreHardwareMonitor.Hardware;
 using SystemMonitor.Models;
 
@@ -75,6 +76,60 @@ namespace SystemMonitor.Services
             return metric;
         }
 
+        public List<DiskMetric> GetDiskMetrics()
+{
+    var metrics = new List<DiskMetric>();
+
+    foreach (var hardware in _computer.Hardware)
+    {
+        if (hardware.HardwareType != HardwareType.Storage) continue;
+        hardware.Update();
+    }
+
+    foreach (var drive in DriveInfo.GetDrives())
+    {
+        if (!drive.IsReady) continue;
+
+        var metric = new DiskMetric
+        {
+            Timestamp = DateTime.Now,
+            DriveName = drive.Name,
+            TotalGB = drive.TotalSize / 1024f / 1024f / 1024f,
+            FreeGB = drive.AvailableFreeSpace / 1024f / 1024f / 1024f
+        };
+
+        metric.UsedGB = metric.TotalGB - metric.FreeGB;
+        metric.UsagePercent = (metric.UsedGB / metric.TotalGB) * 100f;
+        metrics.Add(metric);
+    }
+
+    return metrics;
+}
+
+public NetworkMetric GetNetworkMetric()
+{
+    var metric = new NetworkMetric { Timestamp = DateTime.Now };
+
+    foreach (var hardware in _computer.Hardware)
+    {
+        if (hardware.HardwareType != HardwareType.Network) continue;
+
+        hardware.Update();
+
+        foreach (var sensor in hardware.Sensors)
+        {
+            if (sensor.SensorType == SensorType.Throughput)
+            {
+                if (sensor.Name.Contains("Download"))
+                    metric.DownloadKBps += (sensor.Value ?? 0f) / 1024f;
+                else if (sensor.Name.Contains("Upload"))
+                    metric.UploadKBps += (sensor.Value ?? 0f) / 1024f;
+            }
+        }
+    }
+
+    return metric;
+}
         public void Dispose()
         {
             _computer.Close();
