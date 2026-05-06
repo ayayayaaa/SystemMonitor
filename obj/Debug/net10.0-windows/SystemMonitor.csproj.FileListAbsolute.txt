@@ -66,3 +66,5 @@ D:\SystemMonitor\bin\Debug\net10.0-windows\runtimes\win\lib\net10.0\System.IO.Po
 D:\SystemMonitor\bin\Debug\net10.0-windows\runtimes\win\lib\net10.0\System.Management.dll
 D:\SystemMonitor\obj\Debug\net10.0-windows\SystemMonitor.csproj.AssemblyReference.cache
 D:\SystemMonitor\obj\Debug\net10.0-windows\SystemMo.5D93DFFB.Up2Date
+D:\SystemMonitor\obj\Debug\net10.0-windows\GeneratedInternalTypeHelper.g.cs
+D:\SystemMonitor\obj\Debug\net10.0-windows\SystemMonitor.sourcelink.json
