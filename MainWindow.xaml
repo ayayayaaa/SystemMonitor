@@ -17,9 +17,19 @@
         </Grid.RowDefinitions>
 
         <!-- Title -->
-        <TextBlock Grid.Row="0" Text="System Monitor" 
-                   FontSize="24" FontWeight="Bold" 
-                   Foreground="#CDD6F4" Margin="0,0,0,20"/>
+        <DockPanel Grid.Row="0" Margin="0,0,0,20">
+            <TextBlock Text="System Monitor" 
+                    FontSize="24" FontWeight="Bold" 
+                    Foreground="#CDD6F4"/>
+            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="Export Snapshot CSV" Padding="10,5" Margin="0,0,10,0"
+                        Background="#A6E3A1" Foreground="#1E1E2E" FontWeight="Bold"
+                        Click="ExportSnapshot_Click"/>
+                <Button Content="Export Alert History CSV" Padding="10,5"
+                        Background="#F38BA8" Foreground="#1E1E2E" FontWeight="Bold"
+                        Click="ExportHistory_Click"/>
+            </StackPanel>
+        </DockPanel>
 
         <!-- Metric Cards -->
         <Grid Grid.Row="1" Margin="0,0,0,20">
