@@ -1345,7 +1345,7 @@
           }
         }
       },
-      "System.Management/10.0.2": {
+      "System.Management/10.0.7": {
         "type": "package",
         "compile": {
           "lib/net10.0/System.Management.dll": {
@@ -2144,10 +2144,10 @@
         "useSharedDesignerContext.txt"
       ]
     },
-    "System.Management/10.0.2": {
-      "sha512": "eFftuy3i844lVKCb4lJvvjKfcvPVcW8KrAdSaIOcRL42/Fisj46hwUs8Bky+4avzMe5Snm5t7aSayOI1mybYXg==",
+    "System.Management/10.0.7": {
+      "sha512": "urkYf/JYCGUSF7+95BF2yM5E+QwnpR1Sf23vBw/niZfNbIkxvwYgRV0eoOq5wmz44JLEZ2Jojxa6nvgkrPVGfg==",
       "type": "package",
-      "path": "system.management/10.0.2",
+      "path": "system.management/10.0.7",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2171,7 +2171,7 @@
         "runtimes/win/lib/net8.0/System.Management.xml",
         "runtimes/win/lib/net9.0/System.Management.dll",
         "runtimes/win/lib/net9.0/System.Management.xml",
-        "system.management.10.0.2.nupkg.sha512",
+        "system.management.10.0.7.nupkg.sha512",
         "system.management.nuspec",
         "useSharedDesignerContext.txt"
       ]
@@ -2179,7 +2179,8 @@
   },
   "projectFileDependencyGroups": {
     "net10.0-windows7.0": [
-      "LibreHardwareMonitorLib >= 0.9.6"
+      "LibreHardwareMonitorLib >= 0.9.6",
+      "System.Management >= 10.0.7"
     ]
   },
   "packageFolders": {
@@ -2228,6 +2229,10 @@
           "LibreHardwareMonitorLib": {
             "target": "Package",
             "version": "[0.9.6, )"
+          },
+          "System.Management": {
+            "target": "Package",
+            "version": "[10.0.7, )"
           }
         },
         "imports": [

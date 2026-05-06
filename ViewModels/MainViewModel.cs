@@ -11,6 +11,7 @@ namespace SystemMonitor.ViewModels
         private readonly HardwareService _hardwareService;
         private System.Timers.Timer _timer;
 
+        private readonly ProcessService _processService;
         // CPU
         private float _cpuUsage;
         public float CpuUsage
@@ -59,9 +60,12 @@ namespace SystemMonitor.ViewModels
         // Disk
         public ObservableCollection<DiskMetric> DiskMetrics { get; } = new();
 
+        public ObservableCollection<ProcessInfo> Processes { get; } = new();
+
         public MainViewModel()
         {
             _hardwareService = new HardwareService();
+            _processService = new ProcessService();
             _timer = new System.Timers.Timer(2000);
             _timer.Elapsed += (s, e) => Refresh();
             _timer.Start();
@@ -87,6 +91,14 @@ namespace SystemMonitor.ViewModels
                 DiskMetrics.Clear();
                 foreach (var d in disks)
                     DiskMetrics.Add(d);
+            });
+
+            var processes = _processService.GetProcesses();
+            App.Current.Dispatcher.Invoke(() =>
+            {
+                Processes.Clear();
+                foreach (var proc in processes)
+                    Processes.Add(proc);
             });
         }
 
