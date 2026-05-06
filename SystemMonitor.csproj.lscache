@@ -58,6 +58,8 @@ App.xaml.cs
 AssemblyInfo.cs
 MainWindow.xaml.cs
 Models/
+ AlertHistory.cs
+ AlertRule.cs
  CpuMetric.cs
  DiskMetric.cs
  NetworkMetric.cs
@@ -71,6 +73,7 @@ obj/Debug/net10.0-windows/
  SystemMonitor.AssemblyInfo.cs
  SystemMonitor.GlobalUsings.g.cs
 Services/
+ AlertService.cs
  HardwareService.cs
  ProcessService.cs
 ViewModels/MainViewModel.cs

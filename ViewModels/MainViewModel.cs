@@ -12,6 +12,8 @@ namespace SystemMonitor.ViewModels
         private System.Timers.Timer _timer;
 
         private readonly ProcessService _processService;
+        private readonly AlertService _alertService;
+        private List<AlertRule> _rules;
         // CPU
         private float _cpuUsage;
         public float CpuUsage
@@ -62,10 +64,21 @@ namespace SystemMonitor.ViewModels
 
         public ObservableCollection<ProcessInfo> Processes { get; } = new();
 
+        public ObservableCollection<AlertRule> AlertRules { get; } = new();
+        public ObservableCollection<AlertHistory> AlertHistories { get; } = new();
+
         public MainViewModel()
         {
             _hardwareService = new HardwareService();
             _processService = new ProcessService();
+            _alertService = new AlertService();
+            _rules = _alertService.LoadRules();
+            foreach (var rule in _rules)
+                AlertRules.Add(rule);
+
+            var histories = _alertService.LoadHistory();
+            foreach (var h in histories)
+                AlertHistories.Add(h);
             _timer = new System.Timers.Timer(2000);
             _timer.Elapsed += (s, e) => Refresh();
             _timer.Start();
@@ -100,10 +113,39 @@ namespace SystemMonitor.ViewModels
                 foreach (var proc in processes)
                     Processes.Add(proc);
             });
+            foreach (var rule in _rules)
+            {
+                var triggered = _alertService.Evaluate(rule, CpuUsage, RamUsage);
+                if (triggered != null)
+                {
+                    var histories2 = _alertService.LoadHistory();
+                    histories2.Insert(0, triggered);
+                    _alertService.SaveHistory(histories2);
+
+                    App.Current.Dispatcher.Invoke(() =>
+                    {
+                        AlertHistories.Insert(0, triggered);
+                    });
+                }
+            }
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string? name = null)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+
+            public void AddRule(AlertRule rule)
+            {
+                _rules.Add(rule);
+                AlertRules.Add(rule);
+                _alertService.SaveRules(_rules);
+            }
+
+            public void DeleteRule(AlertRule rule)
+            {
+                _rules.Remove(rule);
+                AlertRules.Remove(rule);
+                _alertService.SaveRules(_rules);
+            }
     }
 }
