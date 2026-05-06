@@ -291,10 +291,20 @@ ViewModels/MainViewModel.cs
 <NUGET>/
  blacksharp.core/1.0.7/lib/net10.0/BlackSharp.Core.dll
  diskinfotoolkit/1.1.2/lib/net10.0/DiskInfoToolkit.dll
+ harfbuzzsharp/8.3.1.1/lib/net8.0/HarfBuzzSharp.dll
  hidsharp/2.6.4/lib/netstandard2.0/HidSharp.dll
  librehardwaremonitorlib/0.9.6/ref/net10.0/LibreHardwareMonitorLib.dll
+ livechartscore.skiasharpview.wpf/2.0.2/lib/net8.0-windows7.0/LiveChartsCore.SkiaSharpView.WPF.dll
+ livechartscore.skiasharpview/2.0.2/lib/net8.0-windows7.0/LiveChartsCore.SkiaSharpView.dll
+ livechartscore/2.0.2/lib/net8.0-windows7.0/LiveChartsCore.dll
  mono.posix.netstandard/1.0.0/ref/netstandard2.0/Mono.Posix.NETStandard.dll
+ opentk.glwpfcontrol/3.3.0/lib/net452/GLWpfControl.dll
+ opentk/3.3.1/lib/net20/OpenTK.dll
  ramspdtoolkit-ndd/1.4.2/lib/net10.0/RAMSPDToolkit-NDD.dll
+ skiasharp.harfbuzz/3.119.0/lib/net8.0/SkiaSharp.HarfBuzz.dll
+ skiasharp.views.desktop.common/3.119.0/lib/net8.0/SkiaSharp.Views.Desktop.Common.dll
+ skiasharp.views.wpf/3.119.0/lib/net462/SkiaSharp.Views.WPF.dll
+ skiasharp/3.119.0/ref/net8.0/SkiaSharp.dll
  system.io.ports/10.0.3/lib/net10.0/System.IO.Ports.dll
  system.management/10.0.7/lib/net10.0/System.Management.dll
 

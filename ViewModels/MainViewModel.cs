@@ -3,6 +3,10 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using SystemMonitor.Models;
 using SystemMonitor.Services;
+using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore.SkiaSharpView.Painting;
+using SkiaSharp;
 
 namespace SystemMonitor.ViewModels
 {
@@ -14,6 +18,9 @@ namespace SystemMonitor.ViewModels
         private readonly ProcessService _processService;
         private readonly AlertService _alertService;
         private List<AlertRule> _rules;
+        private readonly Queue<float> _cpuHistory = new();
+        private readonly Queue<float> _ramHistory = new();
+        private const int MaxHistory = 60;
         // CPU
         private float _cpuUsage;
         public float CpuUsage
@@ -66,12 +73,41 @@ namespace SystemMonitor.ViewModels
 
         public ObservableCollection<AlertRule> AlertRules { get; } = new();
         public ObservableCollection<AlertHistory> AlertHistories { get; } = new();
-
+        public ISeries[] CpuSeries { get; set; }
+        public ISeries[] RamSeries { get; set; }
+        public Axis[] XAxes { get; set; }
+        public Axis[] YAxes { get; set; }
         public MainViewModel()
         {
             _hardwareService = new HardwareService();
             _processService = new ProcessService();
             _alertService = new AlertService();
+            CpuSeries = new ISeries[]
+            {
+                new LineSeries<float>
+                {
+                    Values = new ObservableCollection<float>(),
+                    Name = "CPU %",
+                    Stroke = new SolidColorPaint(SKColor.Parse("#89B4FA"), 2),
+                    Fill = null,
+                    GeometrySize = 0
+                }
+            };
+
+            RamSeries = new ISeries[]
+            {
+                new LineSeries<float>
+                {
+                    Values = new ObservableCollection<float>(),
+                    Name = "RAM %",
+                    Stroke = new SolidColorPaint(SKColor.Parse("#A6E3A1"), 2),
+                    Fill = null,
+                    GeometrySize = 0
+                }
+            };
+
+            XAxes = new Axis[] { new Axis { IsVisible = false } };
+            YAxes = new Axis[] { new Axis { MinLimit = 0, MaxLimit = 100 } };
             _rules = _alertService.LoadRules();
             foreach (var rule in _rules)
                 AlertRules.Add(rule);
@@ -98,6 +134,18 @@ namespace SystemMonitor.ViewModels
             RamTotalGB = ram.TotalGB;
             DownloadKBps = net.DownloadKBps;
             UploadKBps = net.UploadKBps;
+
+            App.Current.Dispatcher.Invoke(() =>
+            {
+                var cpuValues = (ObservableCollection<float>)((LineSeries<float>)CpuSeries[0]).Values!;
+                var ramValues = (ObservableCollection<float>)((LineSeries<float>)RamSeries[0]).Values!;
+
+                cpuValues.Add(CpuUsage);
+                ramValues.Add(RamUsage);
+
+                if (cpuValues.Count > MaxHistory) cpuValues.RemoveAt(0);
+                if (ramValues.Count > MaxHistory) ramValues.RemoveAt(0);
+            });
 
             App.Current.Dispatcher.Invoke(() =>
             {

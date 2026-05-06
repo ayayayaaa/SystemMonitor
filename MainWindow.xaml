@@ -2,6 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:SystemMonitor.ViewModels"
+        xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
         Title="System Monitor" Height="600" Width="900"
         Background="#1E1E2E">
 
@@ -87,6 +88,42 @@
 
         <!-- Tab Panel -->
         <TabControl Grid.Row="2" Background="#313244" BorderThickness="0">
+
+            <!-- Tab Chart -->
+            <TabItem Header="Charts" Foreground="#CDD6F4" Background="#313244">
+                <Border Background="#313244" Padding="15">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- CPU Chart -->
+                        <StackPanel Grid.Row="0" Margin="0,0,0,10">
+                            <TextBlock Text="CPU Usage (60 detik terakhir)" 
+                                    Foreground="#89B4FA" FontWeight="Bold" Margin="0,0,0,5"/>
+                            <lvc:CartesianChart 
+                                Series="{Binding CpuSeries}"
+                                XAxes="{Binding XAxes}"
+                                YAxes="{Binding YAxes}"
+                                Height="150"
+                                Background="Transparent"/>
+                        </StackPanel>
+
+                        <!-- RAM Chart -->
+                        <StackPanel Grid.Row="1">
+                            <TextBlock Text="RAM Usage (60 detik terakhir)" 
+                                    Foreground="#A6E3A1" FontWeight="Bold" Margin="0,0,0,5"/>
+                            <lvc:CartesianChart 
+                                Series="{Binding RamSeries}"
+                                XAxes="{Binding XAxes}"
+                                YAxes="{Binding YAxes}"
+                                Height="150"
+                                Background="Transparent"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </TabItem>
 
             <!-- Tab Disk -->
             <TabItem Header="Disk Usage" Foreground="#CDD6F4" Background="#313244">
