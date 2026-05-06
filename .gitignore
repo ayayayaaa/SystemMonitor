@@ -1,4 +1,6 @@
-echo "bin/
+bin/
 obj/
 *.user
-*.lscache" > .gitignore
+*.lscache
+alert_rules.json
+alert_history.json
