@@ -1,10 +1,1 @@
-[
-  {
-    "Id": "fd4b3d76-fc19-4b3c-824d-8684c3cefedd",
-    "Metric": 0,
-    "Threshold": 80,
-    "DurationSeconds": 10,
-    "IsActive": true,
-    "DisplayName": "CPU \u003E 80% selama 10s"
-  }
-]
+[]

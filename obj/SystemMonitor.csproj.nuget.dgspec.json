@@ -52,6 +52,10 @@
               "target": "Package",
               "version": "[2.0.2, )"
             },
+            "Microsoft.VisualBasic": {
+              "target": "Package",
+              "version": "[10.0.3, )"
+            },
             "System.Management": {
               "target": "Package",
               "version": "[10.0.7, )"

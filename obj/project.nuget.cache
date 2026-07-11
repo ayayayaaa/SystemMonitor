@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "asTeCthjEDo=",
+  "dgSpecHash": "PYx2S6m8ri0=",
   "success": true,
   "projectFilePath": "D:\\SystemMonitor\\SystemMonitor.csproj",
   "expectedPackageFiles": [
@@ -14,6 +14,7 @@
     "C:\\Users\\pavil\\.nuget\\packages\\livechartscore\\2.0.2\\livechartscore.2.0.2.nupkg.sha512",
     "C:\\Users\\pavil\\.nuget\\packages\\livechartscore.skiasharpview\\2.0.2\\livechartscore.skiasharpview.2.0.2.nupkg.sha512",
     "C:\\Users\\pavil\\.nuget\\packages\\livechartscore.skiasharpview.wpf\\2.0.2\\livechartscore.skiasharpview.wpf.2.0.2.nupkg.sha512",
+    "C:\\Users\\pavil\\.nuget\\packages\\microsoft.visualbasic\\10.1.0\\microsoft.visualbasic.10.1.0.nupkg.sha512",
     "C:\\Users\\pavil\\.nuget\\packages\\mono.posix.netstandard\\1.0.0\\mono.posix.netstandard.1.0.0.nupkg.sha512",
     "C:\\Users\\pavil\\.nuget\\packages\\opentk\\3.3.1\\opentk.3.3.1.nupkg.sha512",
     "C:\\Users\\pavil\\.nuget\\packages\\opentk.glwpfcontrol\\3.3.0\\opentk.glwpfcontrol.3.3.0.nupkg.sha512",
@@ -46,6 +47,30 @@
     "C:\\Users\\pavil\\.nuget\\packages\\system.management\\10.0.7\\system.management.10.0.7.nupkg.sha512"
   ],
   "logs": [
+    {
+      "code": "NU1510",
+      "level": "Warning",
+      "message": "PackageReference Microsoft.VisualBasic will not be pruned. Consider removing this package from your dependencies, as it is likely unnecessary.",
+      "projectPath": "D:\\SystemMonitor\\SystemMonitor.csproj",
+      "warningLevel": 1,
+      "filePath": "D:\\SystemMonitor\\SystemMonitor.csproj",
+      "libraryId": "Microsoft.VisualBasic",
+      "targetGraphs": [
+        "net10.0-windows7.0"
+      ]
+    },
+    {
+      "code": "NU1603",
+      "level": "Warning",
+      "message": "SystemMonitor depends on Microsoft.VisualBasic (>= 10.0.3) but Microsoft.VisualBasic 10.0.3 was not found. Microsoft.VisualBasic 10.1.0 was resolved instead.",
+      "projectPath": "D:\\SystemMonitor\\SystemMonitor.csproj",
+      "warningLevel": 1,
+      "filePath": "D:\\SystemMonitor\\SystemMonitor.csproj",
+      "libraryId": "Microsoft.VisualBasic",
+      "targetGraphs": [
+        "net10.0-windows7.0"
+      ]
+    },
     {
       "code": "NU1701",
       "level": "Warning",

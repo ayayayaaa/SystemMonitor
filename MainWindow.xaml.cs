@@ -77,5 +77,46 @@ namespace SystemMonitor
                 MessageBox.Show("Export berhasil!");
             }
         }
+        
+        private void ExportHistory_Range_Click(object sender, RoutedEventArgs e)
+        {
+            var vm = (MainViewModel)DataContext;
+
+            var fromInput = Microsoft.VisualBasic.Interaction.InputBox(
+                "Dari jam berapa? (format: HH:mm, contoh: 10:00)\nKosongkan untuk semua data",
+                "Export History", "");
+
+            var toInput = Microsoft.VisualBasic.Interaction.InputBox(
+                "Sampai jam berapa? (format: HH:mm, contoh: 11:00)\nKosongkan untuk sekarang",
+                "Export History", "");
+
+            var today = DateTime.Today;
+            var from = string.IsNullOrEmpty(fromInput) ? DateTime.MinValue
+                : DateTime.TryParse($"{today:yyyy-MM-dd} {fromInput}", out var f) ? f : DateTime.MinValue;
+            var to = string.IsNullOrEmpty(toInput) ? DateTime.Now
+                : DateTime.TryParse($"{today:yyyy-MM-dd} {toInput}", out var t) ? t : DateTime.Now;
+
+            var snapshots = vm.GetMetricHistory(from, to);
+
+            if (snapshots.Count == 0)
+            {
+                MessageBox.Show("Tidak ada data di range waktu tersebut!");
+                return;
+            }
+
+            var dialog = new Microsoft.Win32.SaveFileDialog
+            {
+                FileName = $"metric_history_{DateTime.Now:yyyyMMdd_HHmmss}",
+                DefaultExt = ".csv",
+                Filter = "CSV files (.csv)|*.csv"
+            };
+
+            if (dialog.ShowDialog() == true)
+            {
+                var exportService = new Services.ExportService();
+                exportService.ExportMetricHistory(snapshots, dialog.FileName);
+                MessageBox.Show($"Export berhasil! {snapshots.Count} data terekam.");
+            }
+        }
     }
 }

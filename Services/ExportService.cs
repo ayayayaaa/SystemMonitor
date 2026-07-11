@@ -35,5 +35,14 @@ namespace SystemMonitor.Services
                 writer.WriteLine($"{d.DriveName},{d.UsedGB:F1},{d.TotalGB:F1},{d.UsagePercent:F1}%");
             }
         }
+        public void ExportMetricHistory(List<MetricSnapshot> snapshots, string filePath)
+        {
+            using var writer = new System.IO.StreamWriter(filePath);
+            writer.WriteLine("Timestamp,CPU%,RAM%,RAM Used GB,Download KB/s,Upload KB/s");
+            foreach (var s in snapshots)
+            {
+                writer.WriteLine($"{s.Timestamp:yyyy-MM-dd HH:mm:ss},{s.CpuUsage:F1},{s.RamUsage:F1},{s.RamUsedGB:F1},{s.DownloadKBps:F1},{s.UploadKBps:F1}");
+            }
+        }
     }
 }

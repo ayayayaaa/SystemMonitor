@@ -15,14 +15,15 @@ namespace SystemMonitor.ViewModels
     {
         private readonly HardwareService _hardwareService;
         private System.Timers.Timer _timer;
-
+        private System.Timers.Timer _processTimer;
         private readonly ProcessService _processService;
         private readonly AlertService _alertService;
         private List<AlertRule> _rules;
         private readonly Queue<float> _cpuHistory = new();
         private readonly Queue<float> _ramHistory = new();
         private const int MaxHistory = 60;
-        // CPU
+        private readonly List<MetricSnapshot> _metricHistory = new();
+
         private float _cpuUsage;
         public float CpuUsage
         {
@@ -30,7 +31,6 @@ namespace SystemMonitor.ViewModels
             set { _cpuUsage = value; OnPropertyChanged(); }
         }
 
-        // RAM
         private float _ramUsage;
         public float RamUsage
         {
@@ -52,7 +52,6 @@ namespace SystemMonitor.ViewModels
             set { _ramTotalGB = value; OnPropertyChanged(); }
         }
 
-        // Network
         private float _downloadKBps;
         public float DownloadKBps
         {
@@ -67,22 +66,21 @@ namespace SystemMonitor.ViewModels
             set { _uploadKBps = value; OnPropertyChanged(); }
         }
 
-        // Disk
         public ObservableCollection<DiskMetric> DiskMetrics { get; } = new();
-
         public ObservableCollection<ProcessInfo> Processes { get; } = new();
-
         public ObservableCollection<AlertRule> AlertRules { get; } = new();
         public ObservableCollection<AlertHistory> AlertHistories { get; } = new();
         public ISeries[] CpuSeries { get; set; }
         public ISeries[] RamSeries { get; set; }
         public Axis[] XAxes { get; set; }
         public Axis[] YAxes { get; set; }
+
         public MainViewModel()
         {
             _hardwareService = new HardwareService();
             _processService = new ProcessService();
             _alertService = new AlertService();
+
             CpuSeries = new ISeries[]
             {
                 new LineSeries<float>
@@ -109,6 +107,7 @@ namespace SystemMonitor.ViewModels
 
             XAxes = new Axis[] { new Axis { IsVisible = false } };
             YAxes = new Axis[] { new Axis { MinLimit = 0, MaxLimit = 100 } };
+
             _rules = _alertService.LoadRules();
             foreach (var rule in _rules)
                 AlertRules.Add(rule);
@@ -116,13 +115,19 @@ namespace SystemMonitor.ViewModels
             var histories = _alertService.LoadHistory();
             foreach (var h in histories)
                 AlertHistories.Add(h);
+
             _timer = new System.Timers.Timer(2000);
-            _timer.Elapsed += (s, e) => Refresh();
+            _timer.Elapsed += (s, e) => RefreshHardware();
             _timer.Start();
-            Refresh();
+
+            _processTimer = new System.Timers.Timer(3000);
+            _processTimer.Elapsed += (s, e) => RefreshProcesses();
+            _processTimer.Start();
+
+            RefreshHardware();
         }
 
-        private void Refresh()
+        private void RefreshHardware()
         {
             var cpu = _hardwareService.GetCpuMetric();
             var ram = _hardwareService.GetRamMetric();
@@ -136,32 +141,30 @@ namespace SystemMonitor.ViewModels
             DownloadKBps = net.DownloadKBps;
             UploadKBps = net.UploadKBps;
 
-            App.Current.Dispatcher.Invoke(() =>
+            _metricHistory.Add(new MetricSnapshot
             {
-                var cpuValues = (ObservableCollection<float>)((LineSeries<float>)CpuSeries[0]).Values!;
-                var ramValues = (ObservableCollection<float>)((LineSeries<float>)RamSeries[0]).Values!;
-
-                cpuValues.Add(CpuUsage);
-                ramValues.Add(RamUsage);
-
-                if (cpuValues.Count > MaxHistory) cpuValues.RemoveAt(0);
-                if (ramValues.Count > MaxHistory) ramValues.RemoveAt(0);
+                Timestamp = DateTime.Now,
+                CpuUsage = CpuUsage,
+                RamUsage = RamUsage,
+                RamUsedGB = RamUsedGB,
+                DownloadKBps = DownloadKBps,
+                UploadKBps = UploadKBps
             });
 
             App.Current.Dispatcher.Invoke(() =>
             {
+                var cpuValues = (ObservableCollection<float>)((LineSeries<float>)CpuSeries[0]).Values!;
+                var ramValues = (ObservableCollection<float>)((LineSeries<float>)RamSeries[0]).Values!;
+                cpuValues.Add(CpuUsage);
+                ramValues.Add(RamUsage);
+                if (cpuValues.Count > MaxHistory) cpuValues.RemoveAt(0);
+                if (ramValues.Count > MaxHistory) ramValues.RemoveAt(0);
+
                 DiskMetrics.Clear();
                 foreach (var d in disks)
                     DiskMetrics.Add(d);
             });
 
-            var processes = _processService.GetProcesses();
-            App.Current.Dispatcher.Invoke(() =>
-            {
-                Processes.Clear();
-                foreach (var proc in processes)
-                    Processes.Add(proc);
-            });
             foreach (var rule in _rules)
             {
                 var triggered = _alertService.Evaluate(rule, CpuUsage, RamUsage);
@@ -170,7 +173,6 @@ namespace SystemMonitor.ViewModels
                     var histories2 = _alertService.LoadHistory();
                     histories2.Insert(0, triggered);
                     _alertService.SaveHistory(histories2);
-
                     App.Current.Dispatcher.Invoke(() =>
                     {
                         AlertHistories.Insert(0, triggered);
@@ -180,22 +182,38 @@ namespace SystemMonitor.ViewModels
             }
         }
 
+        private void RefreshProcesses()
+        {
+            var processes = _processService.GetProcesses();
+            App.Current.Dispatcher.Invoke(() =>
+            {
+                Processes.Clear();
+                foreach (var proc in processes)
+                    Processes.Add(proc);
+            });
+        }
+
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string? name = null)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 
-            public void AddRule(AlertRule rule)
-            {
-                _rules.Add(rule);
-                AlertRules.Add(rule);
-                _alertService.SaveRules(_rules);
-            }
+        public void AddRule(AlertRule rule)
+        {
+            _rules.Add(rule);
+            AlertRules.Add(rule);
+            _alertService.SaveRules(_rules);
+        }
 
-            public void DeleteRule(AlertRule rule)
-            {
-                _rules.Remove(rule);
-                AlertRules.Remove(rule);
-                _alertService.SaveRules(_rules);
-            }
+        public void DeleteRule(AlertRule rule)
+        {
+            _rules.Remove(rule);
+            AlertRules.Remove(rule);
+            _alertService.SaveRules(_rules);
+        }
+
+        public List<MetricSnapshot> GetMetricHistory(DateTime from, DateTime to)
+        {
+            return _metricHistory.Where(s => s.Timestamp >= from && s.Timestamp <= to).ToList();
+        }
     }
 }

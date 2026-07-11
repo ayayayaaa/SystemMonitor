@@ -26,9 +26,12 @@
                 <Button Content="Export Snapshot CSV" Padding="10,5" Margin="0,0,10,0"
                         Background="#A6E3A1" Foreground="#1E1E2E" FontWeight="Bold"
                         Click="ExportSnapshot_Click"/>
+                <Button Content="Export History CSV" Padding="10,5" Margin="0,0,10,0"
+                        Background="#CBA6F7" Foreground="#1E1E2E" FontWeight="Bold"
+                        Click="ExportHistory_Range_Click"/>
                 <Button Content="Export Alert History CSV" Padding="10,5"
                         Background="#F38BA8" Foreground="#1E1E2E" FontWeight="Bold"
-                        Click="ExportHistory_Click"/>
+                        Click="ExportHistory_Click"/>      
             </StackPanel>
         </DockPanel>
 
@@ -156,6 +159,7 @@
                     <DataGrid ItemsSource="{Binding Processes}"
                             AutoGenerateColumns="False"
                             IsReadOnly="True"
+                            CanUserSortColumns="True"
                             Background="#313244"
                             Foreground="#CDD6F4"
                             BorderThickness="0"
@@ -163,11 +167,14 @@
                             AlternatingRowBackground="#45475A"
                             GridLinesVisibility="None">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="PID" Binding="{Binding Pid}" Width="80"/>
-                            <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*"/>
+                            <DataGridTextColumn Header="PID" Binding="{Binding Pid}" Width="80" SortMemberPath="Pid"/>
+                            <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" SortMemberPath="Name"/>
+                            <DataGridTextColumn Header="CPU%" 
+                                                Binding="{Binding CpuPercent, StringFormat={}{0:F1}%}" 
+                                                Width="80" SortMemberPath="CpuPercent"/>
                             <DataGridTextColumn Header="Memory (MB)" 
                                                 Binding="{Binding MemoryMB, StringFormat={}{0:F1}}" 
-                                                Width="120"/>
+                                                Width="120" SortMemberPath="MemoryMB"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Border>

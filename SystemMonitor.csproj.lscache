@@ -62,6 +62,7 @@ Models/
  AlertRule.cs
  CpuMetric.cs
  DiskMetric.cs
+ MetricSnapshot.cs
  NetworkMetric.cs
  ProcessInfo.cs
  RamMetric.cs
